@@ -10,6 +10,7 @@ public class LockedMe {
 	public String path="D:\\SimpliLearnProject\\First Project\\LockedMeProject";
 	File f=new File(path);
 	
+	
 	public void displayMenu()				// This function Displays the Menu with different options available.
 	{
 		System.out.println("\t\t 1. Display all File Names.");
@@ -21,7 +22,6 @@ public class LockedMe {
 	
 	public void displayAllFiles()			 //This function displays names of all the files in ascending order already present in the given directory.
 	{										 //If no file is present already, it prints a negative message.
-		Scanner sc=new Scanner(System.in);
 		String listoffiles[]=f.list();
 			if(listoffiles.length>0)
 			{
@@ -64,15 +64,22 @@ public class LockedMe {
 		String deletefile=sc.nextLine();
 		String path2=path+"\\"+deletefile+".txt";
 		File fd=new File(path2);
-		if(fd.exists())
+		
+		String listoffiles[]=f.list();
+		int flag=0;
+		for(int i=0;i<listoffiles.length;i++)
 		{
-			fd.delete();
-			System.out.println("File "+deletefile+ ".txt Deleted Successfully!!");
+			if(listoffiles[i].equals(deletefile+".txt"))
+			{
+				fd.delete();
+				flag=1;
+				System.out.println("File "+deletefile+ ".txt Deleted Successfully!!");
+			}
 		}
-		else
+		if(flag==0)
 		{
 			System.out.println("File "+deletefile+ ".txt does not exist in the given directory.");
-		}	
+		}
 	}
 		
 	public void searchFile() 					//This function is used to search a user specified file in the given directory.
@@ -80,13 +87,21 @@ public class LockedMe {
 		System.out.println("Enter the file name to be searched");
 		Scanner sc=new Scanner(System.in);
 		String searchfile=sc.nextLine();
-		String path3=path+"\\"+searchfile+".txt";
-		File fs=new File(path3);
-		if(fs.exists())
+		
+//		String path3=path+"\\"+searchfile+".txt";
+//		File fs=new File(path3);
+		
+		String listoffiles[]=f.list();
+		int flag=0;
+		for(int i=0;i<listoffiles.length;i++)
 		{
-			System.out.println("File "+searchfile+".txt found!!");
+			if(listoffiles[i].equals(searchfile+".txt"))
+			{
+				flag=1;
+				System.out.println("File "+searchfile+ ".txt found!!");
+			}
 		}
-		else
+		if(flag==0)
 		{
 			System.out.println("File "+searchfile+".txt not available");
 		}
@@ -94,11 +109,33 @@ public class LockedMe {
 
 	public void exit() 							//This function is used to exit from the Application.
 	{
-		System.out.println("     ******************************************");	
+		System.out.println("     ------------------------------------------");	
 		System.out.println("\tThank You For Using The Application!");
-		System.out.println("     ******************************************");	
+		System.out.println("     ------------------------------------------");	
 	}
 
+	private static void askInput(Scanner sc)
+	{
+		boolean flag;
+		do 
+		{
+			flag=false;
+			try 
+			{
+				i=Integer.parseInt(sc.nextLine());
+				while(i<1 || i>5)
+				{
+					System.out.println("Invalid Option, please enter the value between 1 to 5.");
+					i=Integer.parseInt(sc.nextLine());
+				}
+			}
+			catch(NumberFormatException in)
+			{
+				System.out.println("Please enter a numeric value!!");
+				flag=true;
+			}
+		}while(flag);
+	}
 	
 	public static void main(String[] args) 		// This is the main method where the welcome message, Developers details and calling to all functions take place.
 	{	
@@ -110,31 +147,16 @@ public class LockedMe {
 		System.out.println("Role\t    : Full Stack Developer");
 		System.out.println("**********************************************");	
 		
-		LockedMe lm=new LockedMe();
+		//System.out.println("Enter the path where you want to save the files: ");
+		//enterPath();
+		
+		LockedMe lm=new LockedMe();	
 		lm.displayMenu();
-
+		System.out.println("**********************************************");	
 		System.out.println("Enter one option:");
 		Scanner sc=new Scanner(System.in);
 		
-		try 
-		{
-			i=Integer.parseInt(sc.nextLine());
-			while(i<1 || i>5)
-			{
-				System.out.println("Invalid Option, please enter the value between 1 to 5.");
-				i=Integer.parseInt(sc.nextLine());
-			}
-		}
-		catch(NumberFormatException in)
-		{
-			System.out.println("Please enter a numeric value!!");
-			i=Integer.parseInt(sc.nextLine());
-			while(i<1 || i>5)
-			{
-				System.out.println("Invalid Option, please enter the value between 1 to 5.");
-				i=Integer.parseInt(sc.nextLine());
-			}
-		}
+		askInput(sc);
 			
 		while(i!=5)
 		{
@@ -152,27 +174,10 @@ public class LockedMe {
 			
 			System.out.println("********************************************");	
 			lm.displayMenu();
+			System.out.println("********************************************");	
 			System.out.println("Enter your choice again:");
 		
-			try 
-			{
-				i=Integer.parseInt(sc.nextLine());
-				while(i<1 || i>5)
-					{
-						System.out.println("Invalid Option, please enter the value between 1 to 5.");
-						i=Integer.parseInt(sc.nextLine());
-					}
-			}
-			catch(NumberFormatException in)
-			{
-				System.out.println("Please enter a numeric value!!");
-				i=Integer.parseInt(sc.nextLine());
-				while(i<1 || i>5)
-				{
-					System.out.println("Invalid Option, please enter the value between 1 to 5.");
-					i=Integer.parseInt(sc.nextLine());
-				}
-			}
+			askInput(sc);
 		}
 	lm.exit();
 	}
